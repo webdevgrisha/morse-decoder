@@ -38,8 +38,49 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-    // write your solution here
+    let decodedStr = '';
+    let letterArr = splitMorseStr(expr);
+
+    letterArr.forEach( (letter) => {
+        if(letter.includes('*'.repeat(10))) {
+            decodedStr += " "; 
+        } else {
+            let morseSymbols = defineMorseSymbol(letter);
+            
+            decodedStr += MORSE_TABLE[morseSymbols];
+        }
+    });
+
+    return decodedStr;
 }
+
+function splitMorseStr(str) {
+    let arr = [];
+
+    for(let i = 0; i < str.length; i += 10) {
+        arr.push(str.slice(i, i + 10)); 
+    }
+
+    return [].concat(arr);
+}
+
+function defineMorseSymbol(letter) {
+    let morseSymbols = '';
+
+    for (let i = 0; i < letter.length; i += 2) {
+        let symbol = letter[i] + letter[i + 1];
+
+        if(symbol == '00') continue;
+
+        if(symbol == '10') {
+            morseSymbols += '.';
+        } else {
+            morseSymbols += '-';
+        }
+    }
+
+    return morseSymbols;
+} 
 
 module.exports = {
     decode
